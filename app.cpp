@@ -8,6 +8,7 @@ using namespace spikeapi;
 
 ColorSensor colorsensor(EPort::PORT_C);
 Button button;
+bool lightOn = true;
 
 void main_task(intptr_t unused) {
   // 周期的に攻略(proc_task)を実行
@@ -20,23 +21,36 @@ void main_task(intptr_t unused) {
 }
 
 void proc_task(intptr_t exinf) {
-  colorsensor.lightOff();
-  // ev3_button_is_pressed(BACK_BUTTON)
-  if (button.isCenterPressed()) {
-    // バックボタンが押されたらmain_taskに制御を移す
-    wup_tsk(MAIN_TASK);
-  } else {
-    // 攻略処理(process)の実行
     if (button.isRightPressed())
     {
-      ColorSensor::HSV hsv;
-      colorsensor.getHSV(hsv);
-      printf("H:%u, S:%u, V:%u\n", hsv.h, hsv.s, hsv.v);
-    } else if (button.isLeftPressed()) {
-      ColorSensor::RGB rgb;
-      colorsensor.getRGB(rgb);
-      printf("R:%u, G:%u, B:%u\n", rgb.r, rgb.g, rgb.b);
+        ColorSensor::HSV hsv;
+        colorsensor.getHSV(hsv);
+        printf("[HSV] H:%u, S:%u, V:%u\n", hsv.h, hsv.s, hsv.v);
     }
-  }
-  ext_tsk();
+    else if (button.isLeftPressed())
+    {
+        ColorSensor::RGB rgb;
+        colorsensor.getRGB(rgb);
+        printf("[RGB] R:%u, G:%u, B:%u\n", rgb.r, rgb.g, rgb.b);
+    }
+    else if (button.isCenterPressed())
+    {
+        printf("exit task\n");
+        wup_tsk(MAIN_TASK);
+    }
+    else if (button.isBluetoothPressed())
+    {
+        if (lightOn)
+        {
+            printf("light off\n");
+            colorsensor.lightOff();
+            lightOn = false;
+        }
+        else
+        {
+            printf("light on\n");
+            colorsensor.lightOn();
+            lightOn = true;
+        }
+    }
 }
