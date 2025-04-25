@@ -7,6 +7,7 @@
 using namespace spikeapi;
 
 ColorSensor colorsensor(EPort::PORT_C);
+Button button;
 
 void main_task(intptr_t unused) {
   // 周期的に攻略(proc_task)を実行
@@ -19,7 +20,6 @@ void main_task(intptr_t unused) {
 }
 
 void proc_task(intptr_t exinf) {
-  Button button;
   colorsensor.lightOff();
   // ev3_button_is_pressed(BACK_BUTTON)
   if (button.isCenterPressed()) {
