@@ -31,7 +31,7 @@ void proc_task(intptr_t exinf) {
     {
         ColorSensor::RGB rgb;
         colorsensor.getRGB(rgb);
-        printf("[RGB] R:%u, G:%u, B:%u\n", rgb.r, rgb.g, rgb.b);
+        printf("[RGB] R:%u, G:%u, B:%u\n", rgb.r >> 2, rgb.g >> 2, rgb.b >> 2);
     }
     else if (button.isCenterPressed())
     {
