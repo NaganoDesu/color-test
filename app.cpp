@@ -6,7 +6,7 @@
 
 using namespace spikeapi;
 
-ColorSensor colorsensor(EPort::PORT_C);
+ColorSensor colorsensor(EPort::PORT_E);
 Button button;
 bool lightOn = true;
 
